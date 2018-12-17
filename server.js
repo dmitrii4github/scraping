@@ -140,7 +140,17 @@ app.put("/articles/:id", function(req, res) {
         if (result.deletedCount === 0) {
             throw new Error('No document to delete with ID: ' + _id);
         }
-        return db.Article.remove({ _id: req.params.id }, { note: dbNote._id });
+        console.log(req.params.id);
+        db.Article.updateOne(
+            { _id: mongojs.ObjectId(req.params.id) },
+            { $unset: { note: "" } }
+        )
+        .then(function(error, edited) {
+          if (error) throw error;
+          else
+          console.log(edited);
+          res.send(edited)
+          });
       })
 
     .then(function(dbArticle) {
