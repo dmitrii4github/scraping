@@ -1,6 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var mongojs = require("mongojs");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -123,6 +124,35 @@ app.post("/articles/:id", function(req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
+});
+
+// Route for deleting an Article's associated Note
+app.put("/articles/:id", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+
+  console.log(req.body);
+
+  db.Note.findOne({title : req.body.title, body : req.body.body})
+    .then(function(dbNote) {
+      console.log("dbNote._id: " + dbNote._id);
+      db.Note.deleteOne({_id: mongojs.ObjectId(dbNote._id)})
+      .then(function(result) {
+        if (result.deletedCount === 0) {
+            throw new Error('No document to delete with ID: ' + _id);
+        }
+        return db.Article.remove({ _id: req.params.id }, { note: dbNote._id });
+      })
+
+    .then(function(dbArticle) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+
+  });
 });
 
 // Start the server
