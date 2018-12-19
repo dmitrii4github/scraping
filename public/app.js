@@ -16,32 +16,12 @@ $(document).on("click", "#scrape-new", function() {
 
   // Empty the notes from the note section
   $("#article-container").empty();
-  // Save the id from the p tag
-  //var thisId = $(this).attr("data-id");
-
-  // $.ajax({
-  //   type: 'GET',
-  //   url: '/scrape',
-  //   dataType: 'json',
-  //   success: function(data) {
-  //     console.log(data);
-  //   },
-  //   error: function() {
-  //     alert('error');
-  //   }
-  // });
-
-
+  
   //Now make an ajax call to scrape
   $.ajax({
     method: "GET",
-    url: "/scrape"
-  })
-    // With that done, add the note information to the page
-  .then(function() {})
-  .catch(function(err) {
-    // If an error occurred, log it
-    console.log(err);
+    url: "/scrape",
+    success : handleData()
   });
 
   $.ajax({
@@ -80,9 +60,32 @@ $(document).on("click", "#scrape-new", function() {
     
     })
     
+  });
+
+  function handleData() { console.log("In callback"); }
+
+
+  $(document).on("click", "#clear", function() {
+
+    console.log("Clicked clear button");
+  
+    // Empty the notes from the note section
+    $("#article-container").empty();
     
+    //Now make an ajax call to clear
+    $.ajax({
+      method: "PUT",
+      url: "/clear"
+    })
+      // With that done, add the note information to the page
+    .then(function() {})
+    .catch(function(err) {
+      // If an error occurred, log it
+      console.log(err);
+    });
 
   });
+
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {

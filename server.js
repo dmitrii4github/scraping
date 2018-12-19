@@ -52,8 +52,8 @@ app.get("/", function(req, res) {
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://www.sitepoint.com/community/c/javascript").then(function(response) {
-    //axios.get("http://www.echojs.com/").then(function(response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
+
+  // Then, we load that into cheerio and save it to $ for a shorthand selector
     
     console.log(response.data);
     
@@ -85,6 +85,9 @@ app.get("/scrape", function(req, res) {
         });
       });
     });
+
+    res.json("dummy");
+
   });
 
 
@@ -176,6 +179,25 @@ app.put("/articles/:id", function(req, res) {
 
   });
 });
+
+
+// Route for deleting all articles from db
+app.put("/clear", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+  console.log(req.body);
+
+  db.Article.deleteMany({})
+  .then(function(result) {
+    console.log("Deleted "+result.deletedCount+" articles");
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.json(err);
+  });
+
+});
+
+
 
 // Start the server
 app.listen(PORT, function() {
