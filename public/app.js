@@ -58,19 +58,23 @@ $(document).on("click", "#scrape-new", function() {
       // The title of the article
       $("#article-container").append("<h2>" + data[i].title + "</h2>");
       // An input to enter a new title
+      //$("#article-container").append("<input id='titleinput' name='title' >");
+      // The title of the article
+      $("#article-container").append("<a href=\""+data[i].link+"\">" + data[i].link + "</a>");
+      // An input to enter a new title
       $("#article-container").append("<input id='titleinput' name='title' >");
       // A textarea to add a new note body
       $("#article-containers").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
-      $("#article-container").append("<button data-id='" + data._id + "' id='savenote'>Save Comment</button>");
-      $("#article-container").append("<button data-id='" + data._id + "' id='deletenote'>Delete Comment</button>");
+      $("#article-container").append("<button data-id='" + data[i]._id + "' id='savenote'>Save Comment</button>");
+      $("#article-container").append("<button data-id='" + data[i]._id + "' id='deletenote'>Delete Comment</button>");
 
       // If there's a note in the article
-      if (data.note) {
+      if (data[i].note) {
         // Place the title of the note in the title input
-        $("#titleinput").val(data.note.title);
+        $("#titleinput").val(data[i].note.title);
         // Place the body of the note in the body textarea
-        $("#bodyinput").val(data.note.body);
+        $("#bodyinput").val(data[i].note.body);
       }
     }
     
@@ -83,7 +87,7 @@ $(document).on("click", "#scrape-new", function() {
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
   // Grab the id associated with the article from the submit button
-  var thisId = $(this).attr("data-id");
+  var thisId = $("#savenote").attr("data-id");
 
   // Run a POST request to change the note, using what's entered in the inputs
   $.ajax({
@@ -101,18 +105,18 @@ $(document).on("click", "#savenote", function() {
       // Log the response
       console.log(data);
       // Empty the notes section
-      $("#notes").empty();
+      //$("#notes").empty();
     });
 
   // Also, remove the values entered in the input and textarea for note entry
-  $("#titleinput").val("");
-  $("#bodyinput").val("");
+  // $("#titleinput").val("");
+  // $("#bodyinput").val("");
 });
 
 // When you click the savenote button
 $(document).on("click", "#deletenote", function() {
   // Grab the id associated with the article from the submit button
-  var thisId = $(this).attr("data-id");
+  var thisId = $("deletenote").attr("data-id");
 
   // Run a PUT request to delete the note, using what's entered in the inputs
   $.ajax({
