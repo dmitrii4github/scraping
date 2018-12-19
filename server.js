@@ -53,8 +53,6 @@ app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://www.sitepoint.com/community/c/javascript").then(function(response) {
     //axios.get("http://www.echojs.com/").then(function(response) {
-  
-
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     
     console.log(response.data);
@@ -83,14 +81,12 @@ app.get("/scrape", function(req, res) {
         })
         .catch(function(err) {
           // If an error occurred, log it
-          console.log(err);
+          //console.log(err);
         });
+      });
     });
-
-    // Send a message to the client
-    res.send("Scrape Complete");
   });
-});
+
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
