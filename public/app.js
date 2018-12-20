@@ -9,7 +9,7 @@ $.getJSON("/articles", function(data) {
 });
 
 
-// Whenever someone clicks a p tag
+
 $(document).on("click", "#scrape-new", function() {
 
   console.log("Clicked scrape-new button");
@@ -23,6 +23,10 @@ $(document).on("click", "#scrape-new", function() {
     url: "/scrape",
     success : handleData()
   });
+
+});
+
+$(document).on("click", "#display-articles", function() {
 
   $.ajax({
     method: "GET",
