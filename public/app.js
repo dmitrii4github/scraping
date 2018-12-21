@@ -48,17 +48,36 @@ $(document).on("click", "#display-articles", function() {
       // An input to enter a new title
       $("#article-container").append("<input id='titleinput' name='title' >");
       // A textarea to add a new note body
-      $("#article-containers").append("<textarea id='bodyinput' name='body'></textarea>");
+      //$("#article-containers").append("<textarea id='bodyinput' name='body'></textarea>");
       // A button to submit a new note, with the id of the article saved to it
       $("#article-container").append("<button data-id='" + data[i]._id + "' id='savenote'>Save Comment</button>");
       $("#article-container").append("<button data-id='" + data[i]._id + "' id='deletenote'>Delete Comment</button>");
 
+      console.log("Note:");
+      console.log(data[i].note);
+
       // If there's a note in the article
       if (data[i].note) {
+        console.log("There is note in the article");
         // Place the title of the note in the title input
-        $("#titleinput").val(data[i].note.title);
+
+        $.ajax({
+          method: "GET",
+          url: "/notes/" + data[i].note
+        })
+          // With that done
+          .then(function(data) {
+            // Log the response
+            console.log(data);
+            $("#titleinput").val(data.title);
+
+            // Empty the notes section
+            //$("#notes").empty();
+          });
+
+
         // Place the body of the note in the body textarea
-        $("#bodyinput").val(data[i].note.body);
+        //$("#bodyinput").val(data[i].note.body);
       }
     }
     
@@ -123,7 +142,7 @@ $(document).on("click", "#savenote", function() {
 // When you click the savenote button
 $(document).on("click", "#deletenote", function() {
   // Grab the id associated with the article from the submit button
-  var thisId = $("deletenote").attr("data-id");
+  var thisId = $("#deletenote").attr("data-id");
 
   // Run a PUT request to delete the note, using what's entered in the inputs
   $.ajax({
@@ -133,7 +152,7 @@ $(document).on("click", "#deletenote", function() {
       // Value taken from title input
       title: $("#titleinput").val(),
       // Value taken from note textarea
-      body: $("#bodyinput").val()
+      //body: $("#bodyinput").val()
     }
   })
     // With that done
@@ -146,5 +165,5 @@ $(document).on("click", "#deletenote", function() {
 
   // Also, remove the values entered in the input and textarea for note entry
   $("#titleinput").val("");
-  $("#bodyinput").val("");
+  //$("#bodyinput").val("");
 });

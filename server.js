@@ -147,7 +147,7 @@ app.put("/articles/:id", function(req, res) {
 
   console.log(req.body);
 
-  db.Note.findOne({title : req.body.title, body : req.body.body})
+  db.Note.findOne({title : req.body.title/*, body : req.body.body*/})
     .then(function(dbNote) {
       console.log("dbNote._id: " + dbNote._id);
       db.Note.deleteOne({_id: mongojs.ObjectId(dbNote._id)})
@@ -180,6 +180,20 @@ app.put("/articles/:id", function(req, res) {
   });
 });
 
+// Route for grabbing a specific Note by id, populate it with it's note
+app.get("/notes/:id", function(req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  db.Note.findOne({ _id: req.params.id })
+    // ..and populate all of the notes associated with it
+    .then(function(dbNote) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      res.json(dbNote);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
 
 // Route for deleting all articles from db
 app.put("/clear", function(req, res) {
