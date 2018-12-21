@@ -38,8 +38,14 @@ app.engine(
 app.set("view engine", "handlebars");
 
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/scrapinghw", { useNewUrlParser: true });
+var databaseURI = "mongodb://localhost/scrapinghw";
+
+if (process.env.MONGODB_URI) {
+  mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+} else {
+  mongoose.connect(databaseURI, { useNewUrlParser: true });
+}
+
 
 // Routes
 
