@@ -41,7 +41,7 @@ app.set("view engine", "handlebars");
 var databaseURI = "mongodb://localhost/scrapinghw";
 
 if (process.env.MONGODB_URI) {
-  mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+  mongoose.connect(process.env.MONGODB_URI/*, { useNewUrlParser: true }*/);
 } else {
   mongoose.connect(databaseURI, { useNewUrlParser: true });
 }
