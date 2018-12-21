@@ -218,8 +218,11 @@ app.put("/clear", function(req, res) {
 });
 
 
+const host = '0.0.0.0';
 
-// Start the server
-app.listen(PORT, function() {
-  console.log("App running on port " + PORT + "!");
+// Start our server so that it can begin listening to client requests.
+app.listen(PORT, host, function() {
+  // Log (server-side) when our server has started
+  console.log("Server listening on: http://localhost:" + PORT);
 });
+
